@@ -11,7 +11,6 @@ import RoomJoin2Page from './pages/RoomJoin2';
 import TestPage from './pages/test';
 import TodoContainer from './pages/testCreateDivs';
 
-/*
 const router = createBrowserRouter([
   { path: '/', 
     basename: "/",
@@ -36,16 +35,19 @@ const router = createBrowserRouter([
     ]
   },
 ]);
-*/
+
+
+/*
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<HomePage />}>
       <Route index element={<HomePage />} />
-      <Route path="room-create" element={<RoomCreatePage />} />
-      <Route path="room-join/:roomId" element={<RoomJoin2Page />} />
+      <Route path="/room-create" element={<RoomCreatePage />} />
+      <Route path="/room-join/:roomId" element={<RoomJoin2Page />} />
     </Route>
   )
 )
+*/
 
 function App() {
   
