@@ -29,7 +29,7 @@ const router = createBrowserRouter([
   
   { path: '/room', 
     children: [
-      { path: '/room/room-join2/:roomId', element:<RoomJoin2Page/> },
+      { path: '/room/room-join/:roomId', element:<RoomJoin2Page/> },
     ]
   },
   
