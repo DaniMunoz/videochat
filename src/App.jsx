@@ -28,7 +28,8 @@ const router = createBrowserRouter([
     ]
   },
   
-  { path: '/room', 
+  { path: '/room',
+    basename: "/room", 
     children: [
       { path: '/room/room-join/:roomId', element:<RoomJoin2Page/> },
     ]
