@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/Home';
 import ProductsPage from './pages/Products';
-import RootLayout from './pages/root';
+import RootLayout from './pages/Root';
 import ErrorPage from './pages/Error';
 import ProductDetailPage from './pages/ProductDetail';
 import RoomCreatePage from './pages/RoomCreate';
