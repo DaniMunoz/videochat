@@ -13,8 +13,8 @@ export default function RoomJoinPage() {
   useEffect(() => {
     console.log("useeffect");
     const ROOM_ID = params.roomId;
-    const socket = io("http://localhost:8000/");
-    //const socket = io('https://webrtc-video-server-production.up.railway.app')
+    //const socket = io("http://localhost:8000/");
+    const socket = io('https://webrtc-video-server-production.up.railway.app')
 
     /*
   //Para conectar en local o a un servidor propio
@@ -149,7 +149,7 @@ export default function RoomJoinPage() {
   return (
     <>
       <p>Send this link to your contacts</p>
-      <p>http://127.0.0.1:5173/room/room-join2/{params.roomId}   <button onClick={() => {navigator.clipboard.writeText(`http://127.0.0.1:5173/room/room-join2/${params.roomId}`)}}>Copy</button>
+      <p>https://videochat-danimunoz.vercel.app/{params.roomId}   <button onClick={() => {navigator.clipboard.writeText(`https://videochat-danimunoz.vercel.app/${params.roomId}`)}}>Copy</button>
       </p>
       <div ref={videoGridRef} id="videogrid" className={styles.videoGrid}>
       </div>

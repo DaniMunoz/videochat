@@ -5,8 +5,8 @@ function RoomCreatePage() {
   const navigate = useNavigate();
 
   function navigateHandler() {
-    fetch("http://localhost:8000/room")
-      //fetch("https://webrtc-video-server-production.up.railway.app/room")
+    //fetch("http://localhost:8000/room")
+    fetch("https://webrtc-video-server-production.up.railway.app/room")
       .then((res) => res.json())
       .then((data) => {
         console.log(data.room);
