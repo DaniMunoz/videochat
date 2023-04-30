@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route } from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/Home';
 import ProductsPage from './pages/Products';
@@ -11,6 +11,7 @@ import RoomJoin2Page from './pages/RoomJoin2';
 import TestPage from './pages/test';
 import TodoContainer from './pages/testCreateDivs';
 
+/*
 const router = createBrowserRouter([
   { path: '/', 
     basename: "/",
@@ -34,9 +35,17 @@ const router = createBrowserRouter([
       { path: '/room/room-join/:roomId', element:<RoomJoin2Page/> },
     ]
   },
-  
-  
 ]);
+*/
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<HomePage />}>
+      <Route index element={<HomePage />} />
+      <Route path="room-create" element={<RoomCreatePage />} />
+      <Route path="room-join/:roomId" element={<RoomJoin2Page />} />
+    </Route>
+  )
+)
 
 function App() {
   

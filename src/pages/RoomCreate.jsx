@@ -13,7 +13,7 @@ function RoomCreatePage() {
         //window.location.replace("/room-join?roomId=" + data.room);
         //navigate(`/room-join/${data.room}`);
         //navigate(`/room/room-join/${data.room}`);
-        navigate(`/room-join2/${data.room}`);
+        navigate(`/room-join/${data.room}`);
       });
   }
 
