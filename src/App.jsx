@@ -13,6 +13,7 @@ import TodoContainer from './pages/testCreateDivs';
 
 const router = createBrowserRouter([
   { path: '/', 
+    basename: "/",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
