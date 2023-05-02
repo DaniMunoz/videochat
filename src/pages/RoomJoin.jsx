@@ -144,7 +144,7 @@ export default function RoomJoinPage() {
   return (
     <>
       <p>Send this link to your contacts</p>
-      <p>https://videochat-danimunoz.vercel.app/room/room-join/{params.roomId}   <button onClick={() => {navigator.clipboard.writeText(`https://videochat-danimunoz.vercel.app/room/room-join/${params.roomId}`)}}>Copy</button>
+      <p>https://charla.vercel.app/room/room-join/{params.roomId}   <button onClick={() => {navigator.clipboard.writeText(`https://charla.vercel.app/room/room-join/${params.roomId}`)}}>Copy</button>
       </p>
       <div ref={videoGridRef} id="videogrid" className={styles.videoGrid}>
       </div>
