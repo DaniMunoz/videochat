@@ -35,8 +35,8 @@ export default function RoomJoinPage() {
         //video: true,
         video: {
           facingMode: "user",
-          height: { ideal: 1920 },
-          width: { ideal: 1080 },
+          height: { ideal: 640 },
+          width: { ideal: 480 },
         },
         audio: true,
       })
@@ -52,6 +52,7 @@ export default function RoomJoinPage() {
         });
 
         socket.on("user-connected", (userId) => {
+          console.log("User connected: " + userId);
           connectToNewUser(userId, stream);
         });
       });
