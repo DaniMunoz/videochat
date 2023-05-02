@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import RootLayout from './pages/Root';
 import ErrorPage from './pages/Error';
-import ProductDetailPage from './pages/ProductDetail';
 import RoomCreatePage from './pages/RoomCreate';
 import RoomJoinPage from './pages/RoomJoin';
 
@@ -14,7 +13,6 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element:<RoomCreatePage/> },
       { path: '/room-create', element:<RoomCreatePage/> },
-      { path: '/products/:productId', element:<ProductDetailPage/> },
     ]
   },
   
