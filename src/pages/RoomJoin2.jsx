@@ -35,8 +35,8 @@ export default function RoomJoinPage() {
         //video: true,
         video: {
           facingMode: "user",
-          //height: { ideal: 1920 },
-          //width: { ideal: 1080 },
+          height: { ideal: 1920 },
+          width: { ideal: 1080 },
         },
         audio: true,
       })
@@ -61,9 +61,11 @@ export default function RoomJoinPage() {
       socket.emit("join-room", ROOM_ID, id);
     });
 
+    /*
     socket.on("user-connected", (userId) => {
       console.log("User connected2: " + userId);
     });
+    */
 
     socket.on("user-disconnected", (userId) => {
       if (peers[userId]) peers[userId].close();
