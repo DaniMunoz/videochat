@@ -11,7 +11,6 @@ export default function RoomJoinPage() {
   const [videosNumber, setVideosNumber] = useState(0);
 
   useEffect(() => {
-    console.log("useeffect");
     const ROOM_ID = params.roomId;
     //const socket = io("http://localhost:8000/");
     const socket = io('https://webrtc-video-server-production.up.railway.app')
@@ -37,7 +36,7 @@ export default function RoomJoinPage() {
         video: {
           facingMode: "user",
           height: { ideal: 1920 },
-          width: { ideal: 1920 },
+          width: { ideal: 1080 },
         },
         audio: true,
       })
@@ -63,7 +62,7 @@ export default function RoomJoinPage() {
     });
 
     socket.on("user-connected", (userId) => {
-      console.log("User connected: " + userId);
+      console.log("User connected2: " + userId);
     });
 
     socket.on("user-disconnected", (userId) => {
@@ -124,9 +123,9 @@ export default function RoomJoinPage() {
       height -= 120; //header text and link get some height, so there is less height for videos
       videoWidth = width;
       videoHeight = height;
-      console.log("windowSize.width: " + windowSize.width + " windowSize.height: " + windowSize.height);
-      console.log("screen.width: " + screen.width + " screen.height: " + screen.height);      
-      console.log("videosNumber: " + videosNumber);
+      //console.log("windowSize.width: " + windowSize.width + " windowSize.height: " + windowSize.height);
+      //console.log("screen.width: " + screen.width + " screen.height: " + screen.height);      
+      //console.log("videosNumber: " + videosNumber);
       let rows = 1;
       let columns = 1;
       while( rows * columns < videosNumber ){
@@ -138,8 +137,8 @@ export default function RoomJoinPage() {
           videoHeight = Math.round(height / rows);
         }
       }
-      console.log("columns: " + columns + " rows: " + rows);
-      console.log("width: " + videoWidth + " height: " + videoHeight);
+      //console.log("columns: " + columns + " rows: " + rows);
+      //console.log("width: " + videoWidth + " height: " + videoHeight);
       document.documentElement.style.setProperty("--video-width", `${videoWidth-columns}px`);
       document.documentElement.style.setProperty("--video-height", `${videoHeight-rows}px`);
     }
