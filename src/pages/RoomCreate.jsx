@@ -15,12 +15,12 @@ function RoomCreatePage() {
 
   return (
     <>
-      <h1>My Zoom</h1>
+      <h1>Charla</h1>
       <p></p>
-      <p>Create a meeting room</p>
+      <p>Create a videochat</p>
       <p>Copy the link and send it to your contacts for them to join</p>
       <p>
-        <button onClick={navigateHandler}>Create meeting room</button>
+        <button onClick={navigateHandler}>Create videochat</button>
       </p>
     </>
   );
