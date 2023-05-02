@@ -35,8 +35,8 @@ export default function RoomJoinPage() {
         //video: true,
         video: {
           facingMode: "user",
-          height: { ideal: 1920 },
-          width: { ideal: 1080 },
+          //height: { ideal: 1920 },
+          //width: { ideal: 1080 },
         },
         audio: true,
       })
