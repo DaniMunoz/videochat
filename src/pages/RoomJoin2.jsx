@@ -5,7 +5,7 @@ import Peer from "peerjs";
 import styles from "./RoomJoin.module.css";
 import useWindowSize from "../components/UseWindowSize";
 
-export default function RoomJoin2Page() {
+export default function RoomJoinPage() {
   const params = useParams();
   const videoGridRef = useRef(null);
   const [videosNumber, setVideosNumber] = useState(0);
@@ -31,67 +31,21 @@ export default function RoomJoin2Page() {
     const peers = {};
     //var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-    myPeer.on("call", async (call) => {
-      let stream = null;
-      console.log('*** "call" event received, calling call.answer(strem)');
-      // Obtain the stream object
-      try {
-          stream = await navigator.mediaDevices.getUserMedia(
-              {
-                  audio: true,
-                  video: {
-                    facingMode: "user",
-                    //height: { ideal: 320 },
-                    //width: { ideal: 240 },
-                  },
-              });
-          myStream.current = stream;
-          // Set up event listener for a peer media call -- peer.call, returns a mediaConnection that I name call        
-          // Answer the call by sending this clients video stream --myVideo-- to calling remote user
-          call.answer(stream);
-          // Create new DOM element to place the remote user video when it comes
-          const video = document.createElement('video');
-          // Set up event listener for a stream coming from the remote user in response to this client answering its call
-          call.on("stream", (userVideoStream) => {
-              console.log('***"stream" event received, calling addVideoStream(UserVideoStream)');
-              // Add remote user video stream to this client's active videos in the DOM
-              addVideoStream(video, userVideoStream);
-          });
-      } catch (err) {
-          /* handle the error */
-          console.log('*** ERROR returning the stream: ' + err);
-      }
-  });
-
-    /*
-    navigator.mediaDevices
-      .getUserMedia({
-        //video: true,
-        video: {
-          facingMode: "user",
-          //height: { ideal: 320 },
-          //width: { ideal: 240 },
-        },
-        audio: true,
-      })
-      .then((stream) => {
-        myStream.current = stream;
-        addVideoStream(myVideo, stream);
-
-        // myPeer.on("call", (call) => {
-        //   call.answer(stream);
-        //   const video = document.createElement("video");
-        //   call.on("stream", (userVideoStream) => {
-        //     console.log("call.on.stream 1");
-        //     addVideoStream(video, userVideoStream);
-        //   });
-        // });
-        // socket.on("user-connected", (userId) => {
-        //   console.log("User connected1: " + userId);
-        //   connectToNewUser(userId, stream);
-        // });
+    //////////////////////////////////////
+    myPeer.on("call", (call) => {
+      call.answer(myStream);
+      const video = document.createElement("video");
+      call.on("stream", (userVideoStream) => {
+        console.log("call.on.stream 1");
+        addVideoStream(video, userVideoStream);
       });
-    */
+    });
+
+    socket.on("user-connected", (userId) => {
+      console.log("User connected: " + userId);
+      connectToNewUser(userId, myStream);
+    });
+    /////////////////////////////////////////
 
     myPeer.on("open", (id) => {
       socket.emit("join-room", ROOM_ID, id);
@@ -101,30 +55,11 @@ export default function RoomJoin2Page() {
       if (peers[userId]) peers[userId].close();
     });
 
-
-    //////////////////////////////////////////////////
-    /*
-    myPeer.on("call", (call) => {
-      call.answer(myStream.current);
-      const video = document.createElement("video");
-      call.on("stream", (userVideoStream) => {
-        console.log("call.on.stream 1");
-        addVideoStream(video, userVideoStream);
-      });
-    });
-    */
-
-    socket.on("user-connected", async (userId) => {
-      console.log("User connected2: " + userId);
-      connectToNewUser(userId, myStream.current);
-    });
-    //////////////////////////////////////////////////
-
-    async function connectToNewUser(userId, stream) {
+    function connectToNewUser(userId, stream) {
       console.log("connectToNewUser");
       const video = document.createElement("video");
       console.log("video: " + video);
-      const call = await myPeer.call(userId, stream);
+      const call = myPeer.call(userId, stream);
       call.on("stream", (userVideoStream) => {
         console.log("call.on.stream");
         addVideoStream(video, userVideoStream);
@@ -148,6 +83,21 @@ export default function RoomJoin2Page() {
       videoGridRef.current.appendChild(video);
       setVideosNumber(() => document.getElementsByTagName("video").length);
     }
+
+    navigator.mediaDevices
+      .getUserMedia({
+        //video: true,
+        video: {
+          facingMode: "user",
+          //height: { ideal: 320 },
+          //width: { ideal: 240 },
+        },
+        audio: true,
+      })
+      .then((stream) => {
+        myStream.current = stream;
+        addVideoStream(myVideo, myStream);
+      });
 
     //cleanup useEffect
     return () => {
@@ -212,11 +162,11 @@ export default function RoomJoin2Page() {
     <>
       <p>Send this link to your contacts</p>
       <p className={styles.enlace}>
-        https://charla.vercel.app/room/room-join/{params.roomId}{" "}
+        https://charla.vercel.app/room/room-join2/{params.roomId}{" "}
         <button
           onClick={() => {
             navigator.clipboard.writeText(
-              `https://charla.vercel.app/room/room-join/${params.roomId}`
+              `https://charla.vercel.app/room/room-join2/${params.roomId}`
             );
           }}
         >
