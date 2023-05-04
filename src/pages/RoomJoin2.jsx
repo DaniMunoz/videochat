@@ -56,19 +56,24 @@ export default function RoomJoinPage() {
         });
 
         socket.on("user-connected", (userId) => {
-          console.log("User connected: " + userId);
+          console.log("User connected 1: " + userId);
           connectToNewUser(userId, myStream.current);
         });
         /////////////////////////////////////////
-
-        myPeer.on("open", (id) => {
-          socket.emit("join-room", ROOM_ID, id);
-        });
-
-        socket.on("user-disconnected", (userId) => {
-          if (peers[userId]) peers[userId].close();
-        });
       });
+
+    myPeer.on("open", (id) => {
+      socket.emit("join-room", ROOM_ID, id);
+    });
+
+    socket.on("user-connected", (userId) => {
+      console.log("User connected 2: " + userId);
+      //connectToNewUser(userId, myStream.current);
+    });
+
+    socket.on("user-disconnected", (userId) => {
+      if (peers[userId]) peers[userId].close();
+    });
 
     function connectToNewUser(userId, stream) {
       //setTimeout(function temp() {
