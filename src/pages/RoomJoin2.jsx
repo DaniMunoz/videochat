@@ -45,7 +45,7 @@ export default function RoomJoin2Page() {
         myStream.current = stream;
         addVideoStream(myVideo, stream);
 
-        /*
+        
         myPeer.on("call", (call) => {
           call.answer(stream);
           const video = document.createElement("video");
@@ -54,7 +54,7 @@ export default function RoomJoin2Page() {
             addVideoStream(video, userVideoStream);
           });
         });
-        */
+        
 
         /*
         socket.on("user-connected", (userId) => {
