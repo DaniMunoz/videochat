@@ -54,10 +54,12 @@ export default function RoomJoin2Page() {
           });
         });
 
+        /*
         socket.on("user-connected", (userId) => {
           console.log("User connected1: " + userId);
           connectToNewUser(userId, stream);
         });
+        */
       });
 
     myPeer.on("open", (id) => {
