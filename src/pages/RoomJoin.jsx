@@ -67,9 +67,13 @@ export default function RoomJoinPage() {
     });
 
     function connectToNewUser(userId, stream) {
+      console.log("connectToNewUser");
       const call = myPeer.call(userId, stream);
+      console.log("call: " + call);
       const video = document.createElement("video");
+      console.log("video: " + video);
       call.on("stream", (userVideoStream) => {
+        console.log("call.on.stream");
         addVideoStream(video, userVideoStream);
       });
       call.on("close", () => {
@@ -81,12 +85,14 @@ export default function RoomJoinPage() {
     }
 
     function addVideoStream(video, stream) {
+      console.log("addVideoStream");
       video.srcObject = stream;
       video.className = styles.video;
+      videoGridRef.current.appendChild(video);
       video.addEventListener("loadedmetadata", () => {
+        console.log("loadedmetadata");
         video.play();
       });
-      videoGridRef.current.appendChild(video);
       setVideosNumber(() => document.getElementsByTagName("video").length);
     }
 
@@ -144,7 +150,7 @@ export default function RoomJoinPage() {
   return (
     <>
       <p>Send this link to your contacts</p>
-      <p>https://charla.vercel.app/room/room-join/{params.roomId}   <button onClick={() => {navigator.clipboard.writeText(`https://charla.vercel.app/room/room-join/${params.roomId}`)}}>Copy</button>
+      <p className={styles.enlace}>https://charla.vercel.app/room/room-join/{params.roomId}   <button onClick={() => {navigator.clipboard.writeText(`https://charla.vercel.app/room/room-join/${params.roomId}`)}}>Copy</button>
       </p>
       <div ref={videoGridRef} id="videogrid" className={styles.videoGrid}>
       </div>

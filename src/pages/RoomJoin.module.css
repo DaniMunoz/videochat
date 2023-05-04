@@ -21,6 +21,14 @@ video {
   margin: 1px;
 }
 
+p {
+  color: white;
+}
+
+.enlace {
+  color:rgb(20, 179, 126)
+}
+
 /*
 .wrapper {
   display: grid;
