@@ -44,31 +44,31 @@ export default function RoomJoinPage() {
       .then((stream) => {
         myStream.current = stream;
         addVideoStream(myVideo, myStream.current);
+
+        //////////////////////////////////////
+        myPeer.on("call", (call) => {
+          call.answer(myStream.current);
+          const video = document.createElement("video");
+          call.on("stream", (userVideoStream) => {
+            console.log("call.on.stream 1");
+            addVideoStream(video, userVideoStream);
+          });
+        });
+
+        socket.on("user-connected", (userId) => {
+          console.log("User connected: " + userId);
+          connectToNewUser(userId, myStream.current);
+        });
+        /////////////////////////////////////////
+
+        myPeer.on("open", (id) => {
+          socket.emit("join-room", ROOM_ID, id);
+        });
+
+        socket.on("user-disconnected", (userId) => {
+          if (peers[userId]) peers[userId].close();
+        });
       });
-
-    //////////////////////////////////////
-    myPeer.on("call", (call) => {
-      call.answer(myStream.current);
-      const video = document.createElement("video");
-      call.on("stream", (userVideoStream) => {
-        console.log("call.on.stream 1");
-        addVideoStream(video, userVideoStream);
-      });
-    });
-
-    socket.on("user-connected", (userId) => {
-      console.log("User connected: " + userId);
-      connectToNewUser(userId, myStream.current);
-    });
-    /////////////////////////////////////////
-
-    myPeer.on("open", (id) => {
-      socket.emit("join-room", ROOM_ID, id);
-    });
-
-    socket.on("user-disconnected", (userId) => {
-      if (peers[userId]) peers[userId].close();
-    });
 
     function connectToNewUser(userId, stream) {
       //setTimeout(function temp() {
