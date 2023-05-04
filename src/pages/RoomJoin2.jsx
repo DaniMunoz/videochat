@@ -31,7 +31,6 @@ export default function RoomJoinPage() {
     const peers = {};
     //var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-    /*
     navigator.mediaDevices
       .getUserMedia({
         //video: true,
@@ -48,46 +47,24 @@ export default function RoomJoinPage() {
       });
 
     //////////////////////////////////////
-    myPeer.on("call", (call) => {
+    myPeer.on("call", async (call) => {
+      if(myStream.current === null){
+        myStream.current = await navigator.mediaDevices.getUserMedia(
+          {
+              audio: true,
+              video: {
+                facingMode: "user",
+                //height: { ideal: 320 },
+                //width: { ideal: 240 },
+              },
+          });
+      }
       call.answer(myStream.current);
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
         console.log("call.on.stream 1");
         addVideoStream(video, userVideoStream);
       });
-    });
-    */
-    myPeer.on("call", async (call) => {
-      let stream = null;
-      console.log('*** "call" event received, calling call.answer(strem)');
-      // Obtain the stream object
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: {
-            facingMode: "user",
-            //height: { ideal: 320 },
-            //width: { ideal: 240 },
-          },
-        });
-        myStream.current = stream;
-        // Set up event listener for a peer media call -- peer.call, returns a mediaConnection that I name call
-        // Answer the call by sending this clients video stream --myVideo-- to calling remote user
-        call.answer(stream);
-        // Create new DOM element to place the remote user video when it comes
-        const video = document.createElement("video");
-        // Set up event listener for a stream coming from the remote user in response to this client answering its call
-        call.on("stream", (userVideoStream) => {
-          console.log(
-            '***"stream" event received, calling addVideoStream(UserVideoStream)'
-          );
-          // Add remote user video stream to this client's active videos in the DOM
-          addVideoStream(video, userVideoStream);
-        });
-      } catch (err) {
-        /* handle the error */
-        console.log("*** ERROR returning the stream: " + err);
-      }
     });
 
     socket.on("user-connected", (userId) => {
