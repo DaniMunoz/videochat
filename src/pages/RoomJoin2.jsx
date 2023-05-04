@@ -32,19 +32,19 @@ export default function RoomJoinPage() {
     //var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
     navigator.mediaDevices
-    .getUserMedia({
-      //video: true,
-      video: {
-        facingMode: "user",
-        //height: { ideal: 320 },
-        //width: { ideal: 240 },
-      },
-      audio: true,
-    })
-    .then((stream) => {
-      myStream.current = stream;
-      addVideoStream(myVideo, myStream.current);
-    });
+      .getUserMedia({
+        //video: true,
+        video: {
+          facingMode: "user",
+          //height: { ideal: 320 },
+          //width: { ideal: 240 },
+        },
+        audio: true,
+      })
+      .then((stream) => {
+        myStream.current = stream;
+        addVideoStream(myVideo, myStream.current);
+      });
 
     //////////////////////////////////////
     myPeer.on("call", (call) => {
@@ -71,22 +71,30 @@ export default function RoomJoinPage() {
     });
 
     function connectToNewUser(userId, stream) {
-      console.log("connectToNewUser");
-      const call = myPeer.call(userId, stream);
-      console.log("call 1: " + call);
-      const video = document.createElement("video");
-      console.log("video: " + video);
-      call.on("stream", (userVideoStream) => {
-        console.log("call.on.stream");
-        addVideoStream(video, userVideoStream);
-      });
-      call.on("close", () => {
-        console.log("call.on.close");
-        video.remove();
-        setVideosNumber(() => document.getElementsByTagName("video").length);
-      });
-      console.log("call 2: " + call);
-      peers[userId] = call;
+      setTimeout(function temp() {
+        try {
+          console.log("connectToNewUser");
+          const call = myPeer.call(userId, stream);
+          console.log("call 1: " + call);
+          const video = document.createElement("video");
+          console.log("video: " + video);
+          call.on("stream", (userVideoStream) => {
+            console.log("call.on.stream");
+            addVideoStream(video, userVideoStream);
+          });
+          call.on("close", () => {
+            console.log("call.on.close");
+            video.remove();
+            setVideosNumber(
+              () => document.getElementsByTagName("video").length
+            );
+          });
+          console.log("call 2: " + call);
+          peers[userId] = call;
+        } catch (error) {
+          setTimeout(temp, 20);
+        }
+      }, 10);
     }
 
     function addVideoStream(video, stream) {
