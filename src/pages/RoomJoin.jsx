@@ -69,10 +69,9 @@ export default function RoomJoinPage() {
 
     function connectToNewUser(userId, stream) {
       console.log("connectToNewUser");
-      const call = myPeer.call(userId, stream);
-      console.log("call: " + call);
       const video = document.createElement("video");
       console.log("video: " + video);
+      const call = myPeer.call(userId, stream);
       call.on("stream", (userVideoStream) => {
         console.log("call.on.stream");
         addVideoStream(video, userVideoStream);
@@ -81,7 +80,7 @@ export default function RoomJoinPage() {
         video.remove();
         setVideosNumber(() => document.getElementsByTagName("video").length);
       });
-
+      console.log("call: " + call);
       peers[userId] = call;
     }
 
