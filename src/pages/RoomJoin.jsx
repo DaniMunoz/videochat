@@ -47,6 +47,7 @@ export default function RoomJoinPage() {
           call.answer(stream);
           const video = document.createElement("video");
           call.on("stream", (userVideoStream) => {
+            console.log("call.on.stream 1");
             addVideoStream(video, userVideoStream);
           });
         });
@@ -88,11 +89,11 @@ export default function RoomJoinPage() {
       console.log("addVideoStream");
       video.srcObject = stream;
       video.className = styles.video;
-      videoGridRef.current.appendChild(video);
       video.addEventListener("loadedmetadata", () => {
         console.log("loadedmetadata");
         video.play();
       });
+      videoGridRef.current.appendChild(video);
       setVideosNumber(() => document.getElementsByTagName("video").length);
     }
 
