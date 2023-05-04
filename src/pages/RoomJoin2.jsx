@@ -33,7 +33,7 @@ export default function RoomJoinPage() {
 
     //////////////////////////////////////
     myPeer.on("call", (call) => {
-      call.answer(myStream);
+      call.answer(myStream.current);
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
         console.log("call.on.stream 1");
@@ -43,7 +43,7 @@ export default function RoomJoinPage() {
 
     socket.on("user-connected", (userId) => {
       console.log("User connected: " + userId);
-      connectToNewUser(userId, myStream);
+      connectToNewUser(userId, myStream.current);
     });
     /////////////////////////////////////////
 
