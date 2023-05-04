@@ -71,30 +71,29 @@ export default function RoomJoinPage() {
     });
 
     function connectToNewUser(userId, stream) {
-      setTimeout(function temp() {
-        try {
-          console.log("connectToNewUser");
-          const call = myPeer.call(userId, stream);
-          console.log("call 1: " + call);
-          const video = document.createElement("video");
-          console.log("video: " + video);
-          call.on("stream", (userVideoStream) => {
-            console.log("call.on.stream");
-            addVideoStream(video, userVideoStream);
-          });
-          call.on("close", () => {
-            console.log("call.on.close");
-            video.remove();
-            setVideosNumber(
-              () => document.getElementsByTagName("video").length
-            );
-          });
-          console.log("call 2: " + call);
-          peers[userId] = call;
-        } catch (error) {
-          setTimeout(temp, 20);
-        }
-      }, 10);
+      //setTimeout(function temp() {
+      //  try {
+      console.log("connectToNewUser");
+      const video = document.createElement("video");
+      console.log("video: " + video);
+      const call = myPeer.call(userId, stream).then(() => {
+        console.log("call 1: " + call);
+        call.on("stream", (userVideoStream) => {
+          console.log("call.on.stream");
+          addVideoStream(video, userVideoStream);
+        });
+        call.on("close", () => {
+          console.log("call.on.close");
+          video.remove();
+          setVideosNumber(() => document.getElementsByTagName("video").length);
+        });
+        console.log("call 2: " + call);
+        peers[userId] = call;
+      });
+      //} catch (error) {
+      //  setTimeout(temp, 20);
+      //}
+      //}, 10);
     }
 
     function addVideoStream(video, stream) {
