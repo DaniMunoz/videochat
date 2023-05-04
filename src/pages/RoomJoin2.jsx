@@ -56,7 +56,14 @@ export default function RoomJoinPage() {
       });
 
     //////////////////////////////////////
-    
+    myPeer.on("call", (call) => {
+      call.answer(myStream.current);
+      const video = document.createElement("video");
+      call.on("stream", (userVideoStream) => {
+        console.log("call.on.stream 1");
+        addVideoStream(video, userVideoStream);
+      });
+    });
 
     socket.on("user-connected", (userId) => {
       console.log("User connected 1: " + userId);
