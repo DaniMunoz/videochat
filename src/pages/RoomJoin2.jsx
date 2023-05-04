@@ -77,7 +77,7 @@ export default function RoomJoinPage() {
       const video = document.createElement("video");
       console.log("video: " + video);
       const call = myPeer.call(userId, stream); //.then(() => {
-      console.log("call 1: " + call);
+      //console.log("call 1: " + call);
       call.on("stream", (userVideoStream) => {
         console.log("call.on.stream");
         addVideoStream(video, userVideoStream);
