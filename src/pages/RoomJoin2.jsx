@@ -31,6 +31,21 @@ export default function RoomJoinPage() {
     const peers = {};
     //var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
+    navigator.mediaDevices
+    .getUserMedia({
+      //video: true,
+      video: {
+        facingMode: "user",
+        //height: { ideal: 320 },
+        //width: { ideal: 240 },
+      },
+      audio: true,
+    })
+    .then((stream) => {
+      myStream.current = stream;
+      addVideoStream(myVideo, myStream.current);
+    });
+
     //////////////////////////////////////
     myPeer.on("call", (call) => {
       call.answer(myStream.current);
@@ -60,15 +75,17 @@ export default function RoomJoinPage() {
       const video = document.createElement("video");
       console.log("video: " + video);
       const call = myPeer.call(userId, stream);
+      console.log("call 1: " + call);
       call.on("stream", (userVideoStream) => {
         console.log("call.on.stream");
         addVideoStream(video, userVideoStream);
       });
       call.on("close", () => {
+        console.log("call.on.close");
         video.remove();
         setVideosNumber(() => document.getElementsByTagName("video").length);
       });
-      console.log("call: " + call);
+      console.log("call 2: " + call);
       peers[userId] = call;
     }
 
@@ -83,21 +100,6 @@ export default function RoomJoinPage() {
       videoGridRef.current.appendChild(video);
       setVideosNumber(() => document.getElementsByTagName("video").length);
     }
-
-    navigator.mediaDevices
-      .getUserMedia({
-        //video: true,
-        video: {
-          facingMode: "user",
-          //height: { ideal: 320 },
-          //width: { ideal: 240 },
-        },
-        audio: true,
-      })
-      .then((stream) => {
-        myStream.current = stream;
-        addVideoStream(myVideo, myStream.current);
-      });
 
     //cleanup useEffect
     return () => {
