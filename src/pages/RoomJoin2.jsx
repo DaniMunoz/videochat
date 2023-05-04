@@ -53,6 +53,12 @@ export default function RoomJoinPage() {
             addVideoStream(video, userVideoStream);
           });
         });
+
+        socket.on("user-connected", (userId) => {
+          console.log("User connected 1: " + userId);
+          connectToNewUser(userId, myStream.current);
+        });
+        
       });
 
     //////////////////////////////////////
