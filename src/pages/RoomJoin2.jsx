@@ -74,7 +74,7 @@ export default function RoomJoin2Page() {
     //////////////////////////////////////////////////
     socket.on("user-connected", async (userId) => {
       console.log("User connected2: " + userId);
-      connectToNewUser(userId, myStream);
+      connectToNewUser(userId, myStream.current);
     });
     //////////////////////////////////////////////////
 
