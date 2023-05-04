@@ -9,8 +9,7 @@ function RoomCreatePage() {
       .then((res) => res.json())
       .then((data) => {
         //console.log(data.room);
-        //navigate(`/room/room-join/${data.room}`);
-        navigate(`/room/room-join2/${data.room}`);
+        navigate(`/room/room-join/${data.room}`);
       });
   }
 

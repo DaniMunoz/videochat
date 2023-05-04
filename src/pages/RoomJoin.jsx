@@ -9,19 +9,20 @@ export default function RoomJoinPage() {
   const params = useParams();
   const videoGridRef = useRef(null);
   const [videosNumber, setVideosNumber] = useState(0);
+  let myStream = useRef(null);
 
   useEffect(() => {
     const ROOM_ID = params.roomId;
     //const socket = io("http://localhost:8000/");
-    const socket = io('https://webrtc-video-server-production.up.railway.app')
+    const socket = io("https://webrtc-video-server-production.up.railway.app");
 
     /*
-  //Para conectar en local o a un servidor propio
-    const myPeer = new Peer(undefined, {
-    host: '/',
-    port: '8000'
-  })
-  */
+    //Para conectar en local o a un servidor propio
+      const myPeer = new Peer(undefined, {
+      host: '/',
+      port: '8000'
+    })
+    */
     //Conecta al cloud server de PeerJS
     const myPeer = new Peer();
 
@@ -41,23 +42,35 @@ export default function RoomJoinPage() {
         audio: true,
       })
       .then((stream) => {
-        addVideoStream(myVideo, stream);
-
-        myPeer.on("call", (call) => {
-          call.answer(stream);
-          const video = document.createElement("video");
-          call.on("stream", (userVideoStream) => {
-            console.log("call.on.stream 1");
-            addVideoStream(video, userVideoStream);
-          });
-        });
-
-        socket.on("user-connected", (userId) => {
-          console.log("User connected: " + userId);
-          connectToNewUser(userId, stream);
-        });
+        myStream.current = stream;
+        addVideoStream(myVideo, myStream.current);
       });
-    
+
+    //////////////////////////////////////
+    myPeer.on("call", async (call) => {
+      if(myStream.current === null){
+        myStream.current = await navigator.mediaDevices.getUserMedia(
+          {
+              audio: true,
+              video: {
+                facingMode: "user",
+                //height: { ideal: 320 },
+                //width: { ideal: 240 },
+              },
+          });
+      }
+      call.answer(myStream.current);
+      const video = document.createElement("video");
+      call.on("stream", (userVideoStream) => {
+        console.log("call.on.stream 1");
+        addVideoStream(video, userVideoStream);
+      });
+    });
+
+    socket.on("user-connected", (userId) => {
+      console.log("User connected 1: " + userId);
+      connectToNewUser(userId, myStream.current);
+    });
 
     myPeer.on("open", (id) => {
       socket.emit("join-room", ROOM_ID, id);
@@ -68,19 +81,17 @@ export default function RoomJoinPage() {
     });
 
     function connectToNewUser(userId, stream) {
-      console.log("connectToNewUser");
       const video = document.createElement("video");
-      console.log("video: " + video);
       const call = myPeer.call(userId, stream);
       call.on("stream", (userVideoStream) => {
-        console.log("call.on.stream");
+        //console.log("call.on.stream");
         addVideoStream(video, userVideoStream);
       });
       call.on("close", () => {
+        //console.log("call.on.close");
         video.remove();
         setVideosNumber(() => document.getElementsByTagName("video").length);
       });
-      console.log("call: " + call);
       peers[userId] = call;
     }
 
@@ -115,23 +126,25 @@ export default function RoomJoinPage() {
       let height = screen.height;
       let videoWidth = screen.width;
       let videoHeight = screen.height;
-      if(windowSize.width !== undefined){
-        width = windowSize.width < screen.width ? windowSize.width : screen.width;
+      if (windowSize.width !== undefined) {
+        width =
+          windowSize.width < screen.width ? windowSize.width : screen.width;
       }
-      if(windowSize.height !== undefined){
-        height = windowSize.height < screen.height ? windowSize.height : screen.height;
+      if (windowSize.height !== undefined) {
+        height =
+          windowSize.height < screen.height ? windowSize.height : screen.height;
       }
       width -= 20; //some room form margins
       height -= 120; //header text and link get some height, so there is less height for videos
       videoWidth = width;
       videoHeight = height;
       //console.log("windowSize.width: " + windowSize.width + " windowSize.height: " + windowSize.height);
-      //console.log("screen.width: " + screen.width + " screen.height: " + screen.height);      
+      //console.log("screen.width: " + screen.width + " screen.height: " + screen.height);
       //console.log("videosNumber: " + videosNumber);
       let rows = 1;
       let columns = 1;
-      while( rows * columns < videosNumber ){
-        if( videoWidth > videoHeight){
+      while (rows * columns < videosNumber) {
+        if (videoWidth > videoHeight) {
           columns += 1;
           videoWidth = Math.round(width / columns);
         } else {
@@ -141,8 +154,14 @@ export default function RoomJoinPage() {
       }
       //console.log("columns: " + columns + " rows: " + rows);
       //console.log("width: " + videoWidth + " height: " + videoHeight);
-      document.documentElement.style.setProperty("--video-width", `${videoWidth-columns}px`);
-      document.documentElement.style.setProperty("--video-height", `${videoHeight-rows}px`);
+      document.documentElement.style.setProperty(
+        "--video-width",
+        `${videoWidth - columns}px`
+      );
+      document.documentElement.style.setProperty(
+        "--video-height",
+        `${videoHeight - rows}px`
+      );
     }
     resizeVideos();
   }, [windowSize, videosNumber]);
@@ -150,10 +169,19 @@ export default function RoomJoinPage() {
   return (
     <>
       <p>Send this link to your contacts</p>
-      <p className={styles.enlace}>https://charla.vercel.app/room/room-join/{params.roomId}   <button onClick={() => {navigator.clipboard.writeText(`https://charla.vercel.app/room/room-join/${params.roomId}`)}}>Copy</button>
+      <p className={styles.enlace}>
+        https://charla.vercel.app/room/room-join/{params.roomId}{" "}
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(
+              `https://charla.vercel.app/room/room-join/${params.roomId}`
+            );
+          }}
+        >
+          Copy
+        </button>
       </p>
-      <div ref={videoGridRef} id="videogrid" className={styles.videoGrid}>
-      </div>
+      <div ref={videoGridRef} id="videogrid" className={styles.videoGrid}></div>
     </>
   );
 }
