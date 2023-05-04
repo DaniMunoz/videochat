@@ -96,7 +96,7 @@ export default function RoomJoinPage() {
       })
       .then((stream) => {
         myStream.current = stream;
-        addVideoStream(myVideo, myStream);
+        addVideoStream(myVideo, myStream.current);
       });
 
     //cleanup useEffect
