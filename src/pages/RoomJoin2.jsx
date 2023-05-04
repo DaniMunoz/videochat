@@ -68,7 +68,7 @@ export default function RoomJoinPage() {
 
     socket.on("user-connected", (userId) => {
       console.log("User connected 2: " + userId);
-      //connectToNewUser(userId, myStream.current);
+      connectToNewUser(userId, myStream.current);
     });
 
     socket.on("user-disconnected", (userId) => {
