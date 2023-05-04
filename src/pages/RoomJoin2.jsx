@@ -120,11 +120,11 @@ export default function RoomJoin2Page() {
     });
     //////////////////////////////////////////////////
 
-    function connectToNewUser(userId, stream) {
+    async function connectToNewUser(userId, stream) {
       console.log("connectToNewUser");
       const video = document.createElement("video");
       console.log("video: " + video);
-      const call = myPeer.call(userId, stream);
+      const call = await myPeer.call(userId, stream);
       call.on("stream", (userVideoStream) => {
         console.log("call.on.stream");
         addVideoStream(video, userVideoStream);
