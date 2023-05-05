@@ -171,11 +171,11 @@ export default function RoomJoinPage() {
       <img src="/videocat-100.png" className={styles.logo_left} />
       <p>Send this link to your contacts for them to join</p>
       <p className={styles.enlace}>
-        https://charla.vercel.app/room/room-join/{params.roomId}{" "}
+        https://videocat.vercel.app/room/room-join/{params.roomId}{" "}
         <button
           onClick={() => {
             navigator.clipboard.writeText(
-              `https://charla.vercel.app/room/room-join/${params.roomId}`
+              `https://videocat.vercel.app/room/room-join/${params.roomId}`
             );
           }}
         >
