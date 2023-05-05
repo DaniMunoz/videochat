@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import styles from "./RoomJoin.module.css";
 
 function RoomCreatePage() {
   const navigate = useNavigate();
@@ -15,12 +16,11 @@ function RoomCreatePage() {
 
   return (
     <>
-      <h1>Charla</h1>
-      <p></p>
-      <p>Create a videochat</p>
-      <p>Copy the link and send it to your contacts for them to join</p>
+      <h1>VideoCat</h1>
+      <img src="/videocat-200.png" className={styles.logo} />
+      <h2>&nbsp;</h2>
       <p>
-        <button onClick={navigateHandler}>Create videochat</button>
+        <button onClick={navigateHandler}>Create VideoChat</button>
       </p>
     </>
   );

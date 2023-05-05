@@ -168,7 +168,8 @@ export default function RoomJoinPage() {
 
   return (
     <>
-      <p>Send this link to your contacts</p>
+      <img src="/videocat-100.png" className={styles.logo_left} />
+      <p>Send this link to your contacts for them to join</p>
       <p className={styles.enlace}>
         https://charla.vercel.app/room/room-join/{params.roomId}{" "}
         <button
